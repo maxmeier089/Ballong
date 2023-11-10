@@ -12,11 +12,11 @@ class Plane1(pygame.sprite.Sprite):
 
     def __init__(self, yPos):
         super().__init__()
-        self.drawOffset = Vector2(PLANE_1_WIDTH/2, PLANE_1_HEIGHT/2) 
-        self.rect = Rect(0, 0, 124, 50)
         self.pos = Vector2(WIDTH + PLANE_1_WIDTH, yPos)
-        self.vel = Vector2(-1, 0)    
+        self.vel = Vector2(-1, 0) 
+        self.rect = Rect(0, 0, 124, 50)
         self.image = pygame.image.load("pics/plane1.png")
+        self.drawOffset = Vector2(PLANE_1_WIDTH/2, PLANE_1_HEIGHT/2) 
         self.sound = pygame.mixer.Sound("sound/plane1Motor.wav")
         pygame.mixer.Sound.play(self.sound, -1)   
 
@@ -36,7 +36,7 @@ class Plane1(pygame.sprite.Sprite):
         distFromCenter = distFromCenter / (WIDTH / 2)
 
         # make sound louder the closer the plane is to the center
-        self.sound.set_volume(1 - distFromCenter)
+        self.sound.set_volume((1 - distFromCenter) * 0.5)
 
         # if plane exits screen on the left side, remove it
         if self.pos.x + PLANE_1_WIDTH < 0:

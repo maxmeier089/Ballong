@@ -14,8 +14,8 @@ clock = pygame.time.Clock()
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Ballong")
 
-pygame.mixer.music.load("music/Kristallo.wav")
-pygame.mixer.music.play(-1)
+#pygame.mixer.music.load("music/Kristallo.wav")
+#pygame.mixer.music.play(-1)
 
 
 P1 = Player(K_SPACE)
@@ -69,7 +69,7 @@ while True:
 
 
     # randomly add enemies
-    if random.randint(0, 100) == 0 and running:
+    if random.randint(0, 200) == 0 and running:
         
         yPos = random.randint(55, 555)
 
@@ -77,11 +77,11 @@ while True:
 
         # check if another plane has a similar height already
         for enemy in enemies:
-            if abs(enemy.pos.y - yPos) < 128:
+            if abs(enemy.pos.x - WIDTH) < 150 and abs(enemy.pos.y - yPos) < 100:
                 tooClose = True
                 break
 
-        if not tooClose:
+        #if not tooClose:
             # add enemy plane
             enemy = Plane1(yPos)
             enemies.add(enemy)

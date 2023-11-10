@@ -10,19 +10,19 @@ PLAYER_SIZE = 128
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, burnKey):
-        super().__init__() 
-        self.drawOffset = Vector2(PLAYER_SIZE/2, PLAYER_SIZE/2)
-        self.rect = Rect(0, 0, 100, 120)
-        self.highestY = HEIGHT - (PLAYER_SIZE / 2) - 120
+        super().__init__()
         self.burnKey = burnKey
-        self.ballong = pygame.image.load("pics/ballong.png")
-        self.ballongBurner = pygame.image.load("pics/ballongBurner.png")
-        self.font = pygame.font.SysFont(None, 24)
-        self.burnerSound = pygame.mixer.Sound("sound/burner.wav")
-        self.pos = Vector2(640, self.highestY)
+        self.burnerOn = False
+        self.groundY = HEIGHT - (PLAYER_SIZE / 2) - 120
+        self.pos = Vector2(640, self.groundY) 
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
-        self.burnerOn = False
+        self.rect = Rect(0, 0, 100, 120)
+        self.ballong = pygame.image.load("pics/ballong.png")
+        self.ballongBurner = pygame.image.load("pics/ballongBurner.png")
+        self.drawOffset = Vector2(PLAYER_SIZE/2, PLAYER_SIZE/2) 
+        self.burnerSound = pygame.mixer.Sound("sound/burner.wav") 
+        self.font = pygame.font.SysFont(None, 24)
 
         
     def move(self):
@@ -65,13 +65,13 @@ class Player(pygame.sprite.Sprite):
         # add velocity to position
         self.pos += self.vel
 
-        if self.pos.y > self.highestY:  
+        if self.pos.y > self.groundY:  
             # touched ground
-            self.pos.y = self.highestY
+            self.pos.y = self.groundY
             self.vel = Vector2(0,0)
 
         # compute altitude value within [0, 1.0] (0 lowest, 1 highest)
-        self.altitude = min(1.0, (self.highestY - self.pos.y) / 700)
+        self.altitude = min(1.0, (self.groundY - self.pos.y) / 700)
             
         # update bounding box position
         self.rect.center = self.pos
@@ -105,7 +105,7 @@ class Player(pygame.sprite.Sprite):
 
     # reset balloon
     def reset(self):
-        self.pos = Vector2(640, self.highestY)
+        self.pos = Vector2(640, self.groundY)
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
         self.burnerOn = False
