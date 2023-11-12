@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
         self.rect = Rect(0, 0, 100, 120)
+        self.crash = False
         self.ballong = pygame.image.load("pics/ballong.png")
         self.ballongBurner = pygame.image.load("pics/ballongBurner.png")
         self.drawOffset = Vector2(PLAYER_SIZE/2, PLAYER_SIZE/2) 
@@ -30,13 +31,13 @@ class Player(pygame.sprite.Sprite):
         pressed_keys = pygame.key.get_pressed()
 
         # gravity (accelerates downwards)
-        self.acc = Vector2(0, 0.07)
+        self.acc = Vector2(0, 0.03)
 
         if pressed_keys[self.burnKey]:
 
             # add burner acceleration (upwards)
             # acceleration becomes smaller with increasing altitude
-            self.acc -= Vector2(0, 0.06 + (0.06 * (1-self.altitude)) )
+            self.acc -= Vector2(0, 0.03 + (0.07 * (1-self.altitude)) )
 
             if not self.burnerOn:
                 # burner was not on before
@@ -60,7 +61,7 @@ class Player(pygame.sprite.Sprite):
         self.vel += self.acc
 
         # limit velocity to a maximum value of -1
-        self.vel.y = max(self.vel.y, -1)
+        #self.vel.y = max(self.vel.y, -1)
 
         # add velocity to position
         self.pos += self.vel
@@ -68,6 +69,11 @@ class Player(pygame.sprite.Sprite):
         if self.pos.y > self.groundY:  
             # touched ground
             self.pos.y = self.groundY
+            if self.vel.y >= 3:
+                self.crash = True
+            self.vel = Vector2(0,0)
+        elif self.pos.y - (PLAYER_SIZE / 2) < 0:
+            self.pos.y = PLAYER_SIZE / 2
             self.vel = Vector2(0,0)
 
         # compute altitude value within [0, 1.0] (0 lowest, 1 highest)
@@ -108,7 +114,7 @@ class Player(pygame.sprite.Sprite):
         self.pos = Vector2(640, self.groundY)
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
-        self.burnerOn = False
+        self.burnerOn = False 
 
         
  

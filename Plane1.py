@@ -10,15 +10,16 @@ PLANE_1_HEIGHT = 64
 
 class Plane1(pygame.sprite.Sprite):
 
-    def __init__(self, yPos):
+    def __init__(self, pos, vel):
         super().__init__()
-        self.pos = Vector2(WIDTH + PLANE_1_WIDTH, yPos)
-        self.vel = Vector2(-1, 0) 
+        self.pos = pos
+        self.vel = vel
         self.rect = Rect(0, 0, 124, 50)
         self.image = pygame.image.load("pics/plane1.png")
         self.drawOffset = Vector2(PLANE_1_WIDTH/2, PLANE_1_HEIGHT/2) 
         self.sound = pygame.mixer.Sound("sound/plane1Motor.wav")
-        pygame.mixer.Sound.play(self.sound, -1)   
+        self.sound.set_volume(0)
+        self.sound.play(-1) 
 
 
     def move(self):
